@@ -1,0 +1,31 @@
+[package]
+name = "led_matrix_monitoring"
+version = "0.1.0"
+edition = "2021"
+
+[dependencies]
+image = "0.25"
+imageproc = "0.25"
+num-traits = "0.2"
+
+reqwest = { version = "0.12", features = ["json", "blocking"] }
+
+sysinfo = { version = "0.30", features = ["default", "linux-netdevs"] }
+battery = "0.7"
+procfs = "0.16"
+anyhow = "1"
+
+tracing = "0.1"
+tracing-subscriber = { version = "0.3", features = ["fmt", "json"] }
+console-subscriber = { version = "0.2", features = ["env-filter"] }
+atty = { version = "0.2", features = [] }
+
+serde = { version = "1", features = ["default", "derive", "rc"] }
+serde_json = "1"
+toml = "0.8"
+base64 = "0.22"
+
+humantime = { version = "2" }
+humantime-serde = "1.1"
+chrono = { version = "0.4", features = ["default", "serde"] }
+chrono-tz = { version = "0.9", features = ["default", "serde"] }
