@@ -6,6 +6,17 @@ pub struct UnitInterval {
 }
 
 impl UnitInterval {
+    pub fn new_inverse_linear<V, M>(value: V, max_value: M) -> Self
+    where
+        V: Num + NumCast,
+        M: Num + NumCast,
+    {
+        assert!(!max_value.is_zero());
+
+        let v = 1.0 - value.to_f64().unwrap() / max_value.to_f64().unwrap();
+        UnitInterval { value: v }
+    }
+
     pub fn new_linear<V, M>(value: V, max_value: M) -> Self
     where
         V: Num + NumCast,
@@ -26,7 +37,6 @@ impl UnitInterval {
         let value = (start.to_f64().unwrap() - end.to_f64().unwrap()).abs();
         UnitInterval::new_sigmoid(value, max_value, k)
     }
-
     pub fn new_sigmoid<V, M, K>(value: V, max_value: M, k: K) -> Self
     where
         V: Num + NumCast,

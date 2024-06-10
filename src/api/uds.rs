@@ -1,15 +1,16 @@
-use anyhow::{anyhow, bail};
-use base64::Engine;
-use serde::Serialize;
 use std::io::{Read, Write};
 use std::os::unix::net::UnixStream;
 use std::path::{Path, PathBuf};
+
+use anyhow::{anyhow, bail};
+use base64::Engine;
+use serde::Serialize;
 use tracing::info;
 
 #[derive(Serialize, Debug)]
 pub struct RenderRequest<'a> {
-    left_image: Option<&'a [u8]>,
-    right_image: Option<&'a [u8]>,
+    pub left_image: Option<&'a [u8]>,
+    pub right_image: Option<&'a [u8]>,
 }
 
 #[derive(Serialize, Debug)]
@@ -51,9 +52,9 @@ impl UdsClient {
         })
     }
 
-    pub fn send_request(&mut self, request: RenderRequest) -> anyhow::Result<String> {
+    pub fn send_request(&self, request: RenderRequest) -> anyhow::Result<String> {
         let mut stream = UnixStream::connect(self.path.as_path())?;
-        
+
         let request = RenderRequestInner::try_from(request)?;
         let req_json = serde_json::to_string(&request)?;
 
@@ -64,34 +65,34 @@ impl UdsClient {
         );
         stream.write_all(http_request.as_bytes())?;
 
-        let start = std::time::Instant::now();
         let mut response = String::new();
         stream.read_to_string(&mut response)?;
-
-        println!("{:?}", start.elapsed());
-        
 
         let body_start = response
             .find("\r\n\r\n")
             .ok_or(anyhow!("Invalid HTTP response"))?
             + 4;
         let body = &response[body_start..];
-        
+
         Ok(body.to_string())
     }
 }
 
 #[cfg(test)]
 mod tests {
-    use super::*;
     use crate::render::renderer::Renderer;
+
+    use super::*;
+
     #[test]
     fn test_make_unix_socket_request() {
         let mut renderer = Renderer::new();
-        renderer.render_cpu(10, 10, &[100, 10, 20, 30, 40, 50, 60, 70, 80, 90, 100]);
+        renderer
+            .render_cpu(10, 10, &[100, 10, 20, 30, 40, 50, 60, 70, 80, 90, 100], 4.0)
+            .unwrap();
         let left_image = renderer.save_to_in_memory_png().unwrap();
 
-        let mut uds = UdsClient::new("/tmp/led-matrix.sock").unwrap();
+        let uds = UdsClient::new("/tmp/led-matrix.sock").unwrap();
         let request = RenderRequest {
             left_image: Some(&left_image),
             right_image: None,

@@ -1,1 +1,1 @@
-mod uds;
+pub(crate) mod uds;

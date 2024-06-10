@@ -1,54 +1,60 @@
 extern crate core;
 
-mod collect;
-mod init;
-mod config;
-mod render;
-mod constants;
-mod api;
-
-use std::time::Duration;
-use tracing::{info, warn};
-use crate::collect::data_point::Collector;
-use crate::config::collector_config::{CollectorConfig, DiskFilter, NetworkFilter, Predicate};
+use crate::api::uds::RenderRequest;
+use crate::collect::collector::Collector;
+use crate::config::collector_config::Config;
 use crate::init::init_tracing;
 use crate::render::renderer::Renderer;
 
+mod api;
+mod collect;
+mod config;
+mod constants;
+mod ext;
+mod init;
+mod render;
 
 fn main() -> anyhow::Result<()> {
     init_tracing()?;
 
-    let config = CollectorConfig {
-        max_history_samples: 9,
-        sample_interval: Duration::from_millis(200),
-        disks_names: vec![DiskFilter::Name(Predicate::Equal("nvme0n1".to_string()))],
-        network_interfaces: vec![NetworkFilter::Name(Predicate::Equal("wlp1s0".to_string()))],
-        temperatures: vec![Predicate::StartsWith("k10temp".to_string())],
-    };
+    let config: Config = toml::from_str(&std::fs::read_to_string("./example_config.toml")?)?;
+    let delay = config.collector.sample_interval;
 
-    let delay = config.sample_interval;
-    let mut collector = Collector::new(config)?;
+    let uds = api::uds::UdsClient::new(&config.socket)?;
+    let mut collector = Collector::new(config.collector)?;
 
     loop {
         collector.update();
+        let mut left_renderer = Renderer::new();
+        for render_type in config.render.left.iter() {
+            left_renderer.render(render_type, collector.get_state())?;
+        }
 
-        let mut renderer = Renderer::new();
-        renderer.render_cpu(10, 10, collector.get_cpu_load().unwrap());
-        renderer.save_to_file("./target/cpu.png")?;
+        let mut right_renderer = Renderer::new();
+        for render_type in config.render.right.iter() {
+            right_renderer.render(render_type, collector.get_state())?;
+        }
 
-        let Some(data_point) = collector.last_data_point() else {
-            warn!("No data points yet");
-            std::thread::sleep(delay);
-            continue;
-        };
+        // left_renderer.render_cpu(10, 10, collector.get_cpu_load(), 1.0)?;
+        // left_renderer.render_average_cpu(7, 20, 9, collector.get_cpu_load(), 1.0)?;
+        // left_renderer.plot_io(27, 7, collector.get_network_speeds().into_iter(), 6.0)?;
+        //
+        // right_renderer.plot_io(27, 7, collector.get_disk_speeds().into_iter(), 6.0)?;
+        // right_renderer.render_horizontal_bar(collector.get_mem_usage() as u64, 100, 19, 0, 9, 3.0)?;
+        // right_renderer.render_horizontal_bar(collector.get_mem_usage() as u64, 100, 20, 0, 9, 3.0)?;
+        //
+        // right_renderer.render_horizontal_bar(collector.get_temp() as u64, 100, 16, 0, 9, 3.0)?;
+        // right_renderer.render_horizontal_bar(collector.get_temp() as u64, 100, 17, 0, 9, 3.0)?;
+        //
+        // right_renderer.render_battery(0, 10,  collector.get_battery_level())?;
 
-        info!("Data point: {:?}", data_point);
+        let left_data = left_renderer.save_to_in_memory_png()?;
+        let right_data = right_renderer.save_to_in_memory_png()?;
 
-        let speed = collector.compute_network_rx_tx_speed();
-        info!("Network RX: {} TX: {}", speed.0, speed.1);
-
-        let speed = collector.compute_disk_io_speed();
-        info!("Disk IO Read: {} Write: {}", speed.0, speed.1);
+        uds.send_request(RenderRequest {
+            left_image: Some(&left_data),
+            right_image: Some(&right_data),
+        })?;
 
         std::thread::sleep(delay);
     }

@@ -1,7 +1,7 @@
 use console_subscriber::ConsoleLayer;
-use tracing_subscriber::EnvFilter;
 use tracing_subscriber::layer::SubscriberExt;
 use tracing_subscriber::util::SubscriberInitExt;
+use tracing_subscriber::EnvFilter;
 
 pub fn init_tracing() -> anyhow::Result<()> {
     let console_layer = ConsoleLayer::builder().with_default_env().spawn();
