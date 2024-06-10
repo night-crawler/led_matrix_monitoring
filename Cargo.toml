@@ -29,5 +29,3 @@ base64 = "0.22"
 
 humantime = { version = "2" }
 humantime-serde = "1.1"
-chrono = { version = "0.4", features = ["default", "serde"] }
-chrono-tz = { version = "0.9", features = ["default", "serde"] }

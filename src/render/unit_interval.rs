@@ -66,6 +66,7 @@ pub trait NumUnitIntervalExt {
     fn to_unit<M>(&self, max_value: M) -> UnitInterval
     where
         M: Num + NumCast;
+    #[allow(dead_code)]
     fn to_unit_sigmoid<M, K>(&self, max_value: M, k: K) -> UnitInterval
     where
         M: Num + NumCast,
