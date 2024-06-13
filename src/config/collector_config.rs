@@ -110,7 +110,7 @@ pub struct CollectorConfig {
     pub max_history_samples: usize,
     #[serde(with = "humantime_serde", default = "super::default_sample_interval")]
     pub sample_interval: std::time::Duration,
-    pub disks_names: Vec<DiskFilter>,
+    pub disk_names: Vec<DiskFilter>,
     pub network_interfaces: Vec<NetworkFilter>,
 
     pub temperatures: Vec<Predicate>,
@@ -141,7 +141,7 @@ mod tests {
         let collector_config = CollectorConfig {
             max_history_samples: 10,
             sample_interval: std::time::Duration::from_millis(170),
-            disks_names: vec![DiskFilter::Name(Predicate::Equal("nvme0n1".to_string()))],
+            disk_names: vec![DiskFilter::Name(Predicate::Equal("nvme0n1".to_string()))],
             network_interfaces: vec![NetworkFilter::Name(Predicate::Equal("wlp1s0".to_string()))],
             temperatures: vec![Predicate::StartsWith("k10temp".to_string())],
         };

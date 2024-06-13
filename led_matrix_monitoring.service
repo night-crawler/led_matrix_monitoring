@@ -1,0 +1,14 @@
+[Unit]
+Description=LED Matrix Monitoring Service
+After=network.target
+Requires=led_matrix_daemon.service
+
+[Service]
+Type=simple
+ExecStart=/usr/bin/led_matrix_monitoring --config=/etc/led_matrix/monitoring.toml
+Restart=on-failure
+User=root
+Group=root
+
+[Install]
+WantedBy=multi-user.target

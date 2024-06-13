@@ -1,10 +1,10 @@
 use std::io::{Cursor, Write};
 
+use crate::collect::sensor_state::SensorState;
 use image::codecs::png::PngEncoder;
 use image::{ExtendedColorType, ImageBuffer, ImageEncoder, Luma};
 use imageproc::drawing::draw_hollow_rect_mut;
 use imageproc::rect::Rect;
-use crate::collect::sensor_state::SensorState;
 
 use crate::config::collector_config::RenderType;
 use crate::constants::{HEIGHT, WIDTH};
@@ -264,7 +264,11 @@ impl Renderer {
         Ok(())
     }
 
-    pub fn render(&mut self, render_type: &RenderType, state_ref: SensorState) -> anyhow::Result<()> {
+    pub fn render(
+        &mut self,
+        render_type: &RenderType,
+        state_ref: SensorState,
+    ) -> anyhow::Result<()> {
         match *render_type {
             RenderType::Cpu {
                 mid_point,

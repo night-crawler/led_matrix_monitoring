@@ -88,7 +88,7 @@ impl Collector {
             .into_iter()
             .filter(|disk| {
                 self.config
-                    .disks_names
+                    .disk_names
                     .iter()
                     .any(|disk_filter| disk_filter.evaluate(disk))
             })
@@ -209,7 +209,7 @@ mod tests {
         let config = CollectorConfig {
             max_history_samples: 9,
             sample_interval: Default::default(),
-            disks_names: vec![DiskFilter::Name(Predicate::Equal("nvme0n1".to_string()))],
+            disk_names: vec![DiskFilter::Name(Predicate::Equal("nvme0n1".to_string()))],
             network_interfaces: vec![NetworkFilter::Name(Predicate::Equal("wlp1s0".to_string()))],
             temperatures: vec![Predicate::StartsWith("k10temp".to_string())],
         };

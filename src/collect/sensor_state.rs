@@ -1,7 +1,7 @@
 use crate::collect::data_point::DataPoint;
+use num_traits::ToPrimitive;
 use std::collections::VecDeque;
 use std::time::Instant;
-use num_traits::ToPrimitive;
 
 #[derive(Debug)]
 pub struct SensorState<'a> {

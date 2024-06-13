@@ -1,19 +1,20 @@
-socket = "/tmp/led-matrix.sock"
+socket = "/var/run/led-matrix/led-matrix.sock"
 
 [collector]
 max_history_samples = 10
 sample_interval = "170ms"
 
-[[collector.disks_names]]
-[collector.disks_names.Name]
-Equal = "nvme0n1"
+disk_names = [
+    { Name = { Equal = "nvme0n1" } },
+]
 
-[[collector.network_interfaces]]
-[collector.network_interfaces.Name]
-Equal = "wlp1s0"
+network_interfaces = [
+    { Name = { Equal = "wlp1s0" } },
+]
 
-[[collector.temperatures]]
-StartsWith = "k10temp"
+temperatures = [
+    { StartsWith = "k10temp" },
+]
 
 [render]
 left = [
