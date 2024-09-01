@@ -25,9 +25,9 @@ left = [
 
 right = [
     { Disk = { mid_point = 27, max_height = 7, k = 6.0 } },
+    { Mem = { max_value = 100, start_y = 18, start_x = 0, end_x = 9, k = 3.0 } },
     { Mem = { max_value = 100, start_y = 19, start_x = 0, end_x = 9, k = 3.0 } },
-    { Mem = { max_value = 100, start_y = 20, start_x = 0, end_x = 9, k = 3.0 } },
+    { Temp = { max_value = 100, start_y = 15, start_x = 0, end_x = 9, k = 3.0 } },
     { Temp = { max_value = 100, start_y = 16, start_x = 0, end_x = 9, k = 3.0 } },
-    { Temp = { max_value = 100, start_y = 17, start_x = 0, end_x = 9, k = 3.0 } },
-    { Battery = { start_y = 0, max_height = 10 } }
+    { Battery = { start_y = 0, max_height = 14 } }
 ]
