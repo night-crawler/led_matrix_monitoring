@@ -17,6 +17,9 @@ temperatures = [
 ]
 
 [render]
+max_brightness = 255
+max_brightness_file = "/etc/led_matrix/max_brightness_value"
+
 left = [
     { Cpu = { mid_point = 10, max_height = 10, k = 1.0 } },
     { AverageCpu = { start_x = 7, start_y = 20, end_y = 9, k = 1.0 } },

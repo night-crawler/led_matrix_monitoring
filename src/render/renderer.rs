@@ -16,11 +16,11 @@ pub struct Renderer {
 }
 
 impl Renderer {
-    pub fn new() -> Self {
+    pub fn new(max_brightness: u8) -> Self {
         let buf = ImageBuffer::new(WIDTH, HEIGHT);
         Renderer {
             buf,
-            max_brightness: 255,
+            max_brightness,
         }
     }
 
@@ -378,7 +378,7 @@ mod tests {
 
     #[test]
     fn test_render_cpu() {
-        let mut renderer = Renderer::new();
+        let mut renderer = Renderer::new(255);
         assert!(renderer.render_cpu(10, 10, &LOAD, 6.0).is_ok());
         renderer.save_to_file("./target/cpu.png").unwrap();
 
@@ -402,7 +402,7 @@ mod tests {
             (900, 900),
         ];
 
-        let mut renderer = Renderer::new();
+        let mut renderer = Renderer::new(255);
         assert!(renderer
             .plot_io(27, 7, data_points.iter().cloned(), 7.0)
             .is_ok());
@@ -411,7 +411,7 @@ mod tests {
 
     #[test]
     fn test_render_horizontal_bar() {
-        let mut renderer = Renderer::new();
+        let mut renderer = Renderer::new(255);
         assert!(renderer
             .render_horizontal_bar(100, 100, 33, 0, 9, 6.0)
             .is_ok());
@@ -423,7 +423,7 @@ mod tests {
 
     #[test]
     fn test_render_vertical_bar() {
-        let mut renderer = Renderer::new();
+        let mut renderer = Renderer::new(255);
         assert!(renderer
             .render_vertical_bar(100, 100, 0, 0, 10, 6.0)
             .is_ok());
@@ -435,7 +435,7 @@ mod tests {
 
     #[test]
     fn test_render_battery() {
-        let mut renderer = Renderer::new();
+        let mut renderer = Renderer::new(255);
         assert!(renderer.render_battery(0, 10, 20).is_ok());
         renderer.save_to_file("./target/battery.png").unwrap();
     }

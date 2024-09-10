@@ -118,6 +118,9 @@ pub struct CollectorConfig {
 
 #[derive(Debug, Serialize, Deserialize)]
 pub struct RenderConfig {
+    pub max_brightness: Option<u8>,
+    pub max_brightness_file: Option<String>,
+    
     #[serde(default)]
     pub left: Vec<RenderType>,
 
@@ -147,6 +150,8 @@ mod tests {
         };
 
         let render_config = RenderConfig {
+            max_brightness: Some(255),
+            max_brightness_file: None,
             left: vec![
                 RenderType::Cpu {
                     mid_point: 10,

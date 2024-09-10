@@ -86,7 +86,7 @@ mod tests {
 
     #[test]
     fn test_make_unix_socket_request() {
-        let mut renderer = Renderer::new();
+        let mut renderer = Renderer::new(255);
         renderer
             .render_cpu(10, 10, &[100, 10, 20, 30, 40, 50, 60, 70, 80, 90, 100], 4.0)
             .unwrap();

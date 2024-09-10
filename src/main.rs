@@ -27,15 +27,19 @@ fn main() -> anyhow::Result<()> {
 
     let uds = api::uds::UdsClient::new(&config.socket)?;
     let mut collector = Collector::new(config.collector)?;
-
+    let mut max_brightness = config.render.max_brightness.unwrap_or(255);
     loop {
+        if let Some(file) = config.render.max_brightness_file.as_ref() {
+            max_brightness = std::fs::read_to_string(file)?.trim().parse()?;
+        }
+        
         collector.update();
-        let mut left_renderer = Renderer::new();
+        let mut left_renderer = Renderer::new(max_brightness);
         for render_type in config.render.left.iter() {
             left_renderer.render(render_type, collector.get_state())?;
         }
 
-        let mut right_renderer = Renderer::new();
+        let mut right_renderer = Renderer::new(max_brightness);
         for render_type in config.render.right.iter() {
             right_renderer.render(render_type, collector.get_state())?;
         }

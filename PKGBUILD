@@ -26,6 +26,7 @@ package() {
 
   install -Dm644 "$srcdir/$pkgname-$pkgver/led_matrix_monitoring.service" "$pkgdir/usr/lib/systemd/system/$pkgname.service"
   install -Dm644 "$srcdir/$pkgname-$pkgver/example_config.toml" "$pkgdir/etc/led_matrix/monitoring.toml"
+  install -Dm644 "$srcdir/$pkgname-$pkgver/max_brightness_value" "$pkgdir/etc/led_matrix/max_brightness_value"
 
   install -Dm644 "README.md" "$pkgdir/usr/share/doc/${pkgname}/README.md"
   install -Dm644 "LICENSE" "$pkgdir/usr/share/licenses/${pkgname}/LICENSE"
