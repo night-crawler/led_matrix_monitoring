@@ -158,7 +158,7 @@ impl Collector {
     }
 
     fn collect_cpu_temp(&mut self) -> Option<u8> {
-        self.components.refresh_list();
+        self.components.refresh();
 
         let mut temp_total = 0f32;
         let mut count = 0;
