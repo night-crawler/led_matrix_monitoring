@@ -3,28 +3,24 @@ name = "led_matrix_monitoring"
 version = "0.1.0"
 edition = "2021"
 
-[dependencies]
-clap = { version = "4.5", features = ["derive"] }
+[features]
+integration = []
 
+[dependencies]
+anyhow = "1"
+atty = { version = "0.2", features = [] }
+base64 = "0.22"
+battery = "0.7"
+clap = { version = "4.5", features = ["derive"] }
+console-subscriber = { version = "0.2", features = ["env-filter"] }
+humantime-serde = "1.1"
 image = "0.25"
 imageproc = { version = "0.25", features = ["default"] }
-
 num-traits = "0.2"
-
-sysinfo = { version = "0.30", features = ["default", "linux-netdevs"] }
-battery = "0.7"
 procfs = "0.16"
-anyhow = "1"
-
-tracing = "0.1"
-tracing-subscriber = { version = "0.3", features = ["fmt", "json"] }
-console-subscriber = { version = "0.2", features = ["env-filter"] }
-atty = { version = "0.2", features = [] }
-
 serde = { version = "1", features = ["default", "derive", "rc"] }
 serde_json = "1"
+sysinfo = { version = "0.30", features = ["default", "linux-netdevs"] }
 toml = "0.8"
-base64 = "0.22"
-
-humantime = { version = "2" }
-humantime-serde = "1.1"
+tracing = "0.1"
+tracing-subscriber = { version = "0.3", features = ["fmt", "json"] }

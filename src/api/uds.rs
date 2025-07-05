@@ -1,10 +1,9 @@
-use std::io::{Read, Write};
-use std::os::unix::net::UnixStream;
-use std::path::{Path, PathBuf};
-
 use anyhow::{anyhow, bail};
 use base64::Engine;
 use serde::Serialize;
+use std::io::{Read, Write};
+use std::os::unix::net::UnixStream;
+use std::path::{Path, PathBuf};
 use tracing::info;
 
 #[derive(Serialize, Debug)]
@@ -79,8 +78,10 @@ impl UdsClient {
 }
 
 #[cfg(test)]
+#[cfg(feature = "integration")]
 mod tests {
     use crate::render::renderer::Renderer;
+    use std::env;
 
     use super::*;
 
@@ -92,7 +93,10 @@ mod tests {
             .unwrap();
         let left_image = renderer.save_to_in_memory_png().unwrap();
 
-        let uds = UdsClient::new("/tmp/led-matrix.sock").unwrap();
+        let socket_path = env::var("LED_MATRIX_SOCKET")
+            .unwrap_or_else(|_| "/var/run/led-matrix/led-matrix.sock".to_string());
+
+        let uds = UdsClient::new(socket_path).unwrap();
         let request = RenderRequest {
             left_image: Some(&left_image),
             right_image: None,

@@ -32,7 +32,7 @@ fn main() -> anyhow::Result<()> {
         if let Some(file) = config.render.max_brightness_file.as_ref() {
             max_brightness = std::fs::read_to_string(file)?.trim().parse()?;
         }
-        
+
         collector.update();
         let mut left_renderer = Renderer::new(max_brightness);
         for render_type in config.render.left.iter() {

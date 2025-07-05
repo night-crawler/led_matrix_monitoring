@@ -120,7 +120,7 @@ pub struct CollectorConfig {
 pub struct RenderConfig {
     pub max_brightness: Option<u8>,
     pub max_brightness_file: Option<String>,
-    
+
     #[serde(default)]
     pub left: Vec<RenderType>,
 
@@ -138,6 +138,7 @@ pub struct Config {
 #[cfg(test)]
 mod tests {
     use super::*;
+    use std::env;
 
     #[test]
     fn create_sample_config() {
@@ -212,8 +213,11 @@ mod tests {
             ],
         };
 
+        let socket_path = env::var("LED_MATRIX_SOCKET")
+            .unwrap_or_else(|_| "/var/run/led-matrix/led-matrix.sock".to_string());
+
         let config = Config {
-            socket: "/tmp/led-matrix.sock".to_string(),
+            socket: socket_path,
             collector: collector_config,
             render: render_config,
         };
