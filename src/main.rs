@@ -1,5 +1,6 @@
 extern crate core;
 
+use anyhow::bail;
 use clap::Parser;
 
 use crate::api::uds::RenderRequest;
@@ -30,7 +31,13 @@ fn main() -> anyhow::Result<()> {
     let mut max_brightness = config.render.max_brightness.unwrap_or(255);
     loop {
         if let Some(file) = config.render.max_brightness_file.as_ref() {
-            max_brightness = std::fs::read_to_string(file)?.trim().parse()?;
+            let data = match std::fs::read_to_string(file) {
+                Ok(data) => data,
+                Err(err) => {
+                    bail!("Failed to read the max_brightness file `{file}`: {err}");
+                }
+            };
+            max_brightness = data.trim().parse()?;
         }
 
         collector.update();

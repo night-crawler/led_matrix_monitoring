@@ -23,6 +23,38 @@ Widgets:
 
 ## Installation
 
+### NixOS
+
+Add the flake to your NixOS configuration:
+
+```nix
+{
+  inputs.led-matrix-monitoring.url = "github:night-crawler/led_matrix_monitoring";
+
+  outputs = { self, nixpkgs, led-matrix-monitoring, ... }: {
+    nixosConfigurations.your-hostname = nixpkgs.lib.nixosSystem {
+      # ...
+      modules = [
+        led-matrix-monitoring.nixosModules.default
+        {
+          services.led-matrix-monitoring = {
+            enable = true;
+            settings = {
+              # Override default settings from example_config.toml
+              # Note: socket path is automatically set if led-matrix-daemon is configured
+              # You only need to set it manually if you want to override the automatic configuration
+              # socket = "/run/led-matrix/led-matrix.sock";
+              collector.max_history_samples = 20;
+              collector.sample_interval = "200ms";
+            };
+          };
+        }
+      ];
+    };
+  };
+}
+```
+
 ### Arch Linux
 
 ```bash

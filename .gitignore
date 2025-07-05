@@ -7,3 +7,4 @@ src/led_matrix_monitoring-*/**
 led_matrix_monitoring*.tar.gz
 led_matrix_monitoring-*.pkg.tar.zst
 /result
+.direnv
