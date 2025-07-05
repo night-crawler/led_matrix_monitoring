@@ -1,4 +1,4 @@
-socket = "/var/run/led-matrix/led-matrix.sock"
+socket = "/run/led-matrix/led-matrix.sock"
 
 [collector]
 max_history_samples = 10

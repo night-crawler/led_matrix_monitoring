@@ -94,7 +94,7 @@ mod tests {
         let left_image = renderer.save_to_in_memory_png().unwrap();
 
         let socket_path = env::var("LED_MATRIX_SOCKET")
-            .unwrap_or_else(|_| "/var/run/led-matrix/led-matrix.sock".to_string());
+            .unwrap_or_else(|_| "/run/led-matrix/led-matrix.sock".to_string());
 
         let uds = UdsClient::new(socket_path).unwrap();
         let request = RenderRequest {

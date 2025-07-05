@@ -214,7 +214,7 @@ mod tests {
         };
 
         let socket_path = env::var("LED_MATRIX_SOCKET")
-            .unwrap_or_else(|_| "/var/run/led-matrix/led-matrix.sock".to_string());
+            .unwrap_or_else(|_| "/run/led-matrix/led-matrix.sock".to_string());
 
         let config = Config {
             socket: socket_path,
