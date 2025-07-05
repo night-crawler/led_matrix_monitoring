@@ -4,33 +4,27 @@ socket = "/var/run/led-matrix/led-matrix.sock"
 max_history_samples = 10
 sample_interval = "170ms"
 
-disk_names = [
-    { Name = { Equal = "nvme0n1" } },
-]
+disk_names = [{ Name = { Equal = "nvme0n1" } }]
 
-network_interfaces = [
-    { Name = { Equal = "wlp1s0" } },
-]
+network_interfaces = [{ Name = { Equal = "wlp1s0" } }]
 
-temperatures = [
-    { StartsWith = "k10temp" },
-]
+temperatures = [{ StartsWith = "k10temp" }]
 
 [render]
 max_brightness = 255
 max_brightness_file = "/etc/led_matrix/max_brightness_value"
 
 left = [
-    { Cpu = { mid_point = 10, max_height = 10, k = 1.0 } },
-    { AverageCpu = { start_x = 7, start_y = 20, end_y = 9, k = 1.0 } },
-    { Network = { mid_point = 27, max_height = 7, k = 6.0 } }
+  { Cpu = { mid_point = 10, max_height = 10, k = 1.0 } },
+  { AverageCpu = { start_x = 7, start_y = 20, end_y = 9, k = 1.0 } },
+  { Network = { mid_point = 27, max_height = 7, k = 6.0 } },
 ]
 
 right = [
-    { Disk = { mid_point = 27, max_height = 7, k = 6.0 } },
-    { Mem = { max_value = 100, start_y = 18, start_x = 0, end_x = 9, k = 3.0 } },
-    { Mem = { max_value = 100, start_y = 19, start_x = 0, end_x = 9, k = 3.0 } },
-    { Temp = { max_value = 100, start_y = 15, start_x = 0, end_x = 9, k = 3.0 } },
-    { Temp = { max_value = 100, start_y = 16, start_x = 0, end_x = 9, k = 3.0 } },
-    { Battery = { start_y = 0, max_height = 14 } }
+  { Disk = { mid_point = 27, max_height = 7, k = 6.0 } },
+  { Mem = { max_value = 100, start_y = 18, start_x = 0, end_x = 9, k = 3.0 } },
+  { Mem = { max_value = 100, start_y = 19, start_x = 0, end_x = 9, k = 3.0 } },
+  { Temp = { max_value = 100, start_y = 15, start_x = 0, end_x = 9, k = 3.0 } },
+  { Temp = { max_value = 100, start_y = 16, start_x = 0, end_x = 9, k = 3.0 } },
+  { Battery = { start_y = 0, max_height = 14 } },
 ]

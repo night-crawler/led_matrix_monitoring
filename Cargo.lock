@@ -1056,7 +1056,6 @@ dependencies = [
  "battery",
  "clap",
  "console-subscriber",
- "humantime",
  "humantime-serde",
  "image",
  "imageproc",

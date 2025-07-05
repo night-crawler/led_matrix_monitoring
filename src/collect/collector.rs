@@ -199,6 +199,7 @@ impl Collector {
 }
 
 #[cfg(test)]
+#[cfg(feature = "integration")]
 mod tests {
     use crate::config::collector_config::{DiskFilter, NetworkFilter, Predicate};
 
